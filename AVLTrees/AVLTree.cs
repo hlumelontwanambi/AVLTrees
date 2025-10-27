@@ -51,8 +51,8 @@ namespace AVLTrees
             Node T2 = y.Right;
 
             // Perform rotation
-            y.Right = x;
-            x.Left = y;
+            y.Left = x;
+            x.Right = T2;
 
             //Update heights
             x.Height = Math.Max(GetHeight(x.Left), GetHeight(x.Right)) + 1;
@@ -60,6 +60,28 @@ namespace AVLTrees
 
             //Return new root
             return y;
+        }
+
+        public void Insert(int key)
+        {
+            Console.WriteLine($"\nInserting {key}...");
+            root = Insert(root, key);
+        }
+
+        private Node Insert(Node node, int key)
+        {
+            //1. Perform standard BST insertion
+            if (node == null)
+                return new Node(key);
+            if (key < node.Key)
+                node.Left = Insert(node.Left, key);
+            else if (key > node.Key)
+                node.Right = Insert(node.Right, key);
+            else // Duplicate keys not allowed
+                return node;
+
+            //2. Update height of this ancestor node
+            node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
         }
     }
 }
